@@ -3,6 +3,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import logo from "../../../public/Asset/DocAppoint.png";
 
@@ -45,13 +46,19 @@ export default function Navbar() {
 
         {/* Right Buttons */}
         <div className="flex items-center gap-3">
-          <button className="hidden md:block text-emerald-600 font-semibold px-5 py-2 rounded-full hover:bg-emerald-50 transition">
+          <Link
+            href="/login"
+            className="hidden md:inline-flex text-emerald-600 font-semibold px-5 py-2 rounded-full hover:bg-emerald-50 transition"
+          >
             Login
-          </button>
+          </Link>
 
-          <button className="bg-emerald-600 text-white font-semibold px-5 py-2 rounded-full hover:opacity-90 active:scale-95 transition">
+          <Link
+            href="/register"
+            className="bg-emerald-600 text-white font-semibold px-5 py-2 rounded-full hover:opacity-90 active:scale-95 transition"
+          >
             Register
-          </button>
+          </Link>
 
           {/* Mobile Menu Button */}
           <button
@@ -97,13 +104,19 @@ export default function Navbar() {
             </a>
 
             <div className="flex gap-3 pt-2">
-              <button className="flex-1 border border-emerald-600 text-emerald-600 py-2 rounded-full">
+              <Link
+                href="/login"
+                className="flex-1 border border-emerald-600 text-emerald-600 py-2 rounded-full text-center"
+              >
                 Login
-              </button>
+              </Link>
 
-              <button className="flex-1 bg-emerald-600 text-white py-2 rounded-full">
+              <Link
+                href="/register"
+                className="flex-1 bg-emerald-600 text-white py-2 rounded-full text-center"
+              >
                 Register
-              </button>
+              </Link>
             </div>
           </div>
         </div>

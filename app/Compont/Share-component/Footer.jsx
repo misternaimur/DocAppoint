@@ -22,37 +22,37 @@ const Footer = () => {
     {
       name: "Facebook",
       icon: faFacebook,
-      href: "https://facebook.com",
+      href: "https://facebook.com/misternaimur",
       color: "hover:text-blue-600",
     },
     {
       name: "Twitter",
       icon: faTwitter,
-      href: "https://twitter.com",
+      href: "https://twitter.com/misternaimur",
       color: "hover:text-sky-400",
     },
     {
       name: "LinkedIn",
       icon: faLinkedin,
-      href: "https://linkedin.com",
+      href: "https://linkedin.com/in/misternaimur",
       color: "hover:text-blue-700",
     },
     {
       name: "Instagram",
       icon: faInstagram,
-      href: "https://instagram.com",
+      href: "https://instagram.com/misternaimur",
       color: "hover:text-pink-500",
     },
     {
       name: "GitHub",
       icon: faGithub,
-      href: "https://github.com",
+      href: "https://github.com/misternaimur",
       color: "hover:text-gray-800",
     },
     {
       name: "YouTube",
       icon: faYoutube,
-      href: "https://youtube.com",
+      href: "https://youtube.com/@misternaimur",
       color: "hover:text-red-600",
     },
   ];
