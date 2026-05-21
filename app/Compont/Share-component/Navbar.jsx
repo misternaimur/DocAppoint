@@ -22,19 +22,19 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
-          <a
-            href="#"
+          <Link
+            href="/"
             className="text-emerald-600 border-b-2 border-emerald-600 pb-1 font-medium"
           >
             Home
-          </a>
+          </Link>
 
-          <a
-            href="#"
+          <Link
+            href="/Doctors"
             className="text-gray-600 hover:text-emerald-600 transition"
           >
-            All Appointments
-          </a>
+            All Doctors
+          </Link>
 
           <a
             href="#"
@@ -91,13 +91,16 @@ export default function Navbar() {
       {open && (
         <div className="md:hidden bg-white border-t shadow-sm">
           <div className="flex flex-col px-4 py-3 space-y-3">
-            <a href="#" className="text-emerald-600 font-medium">
+            <Link href="/" className="text-emerald-600 font-medium">
               Home
-            </a>
+            </Link>
 
-            <a href="#" className="text-gray-600 hover:text-emerald-600">
-              All Appointments
-            </a>
+            <Link
+              href="/Doctors"
+              className="text-gray-600 hover:text-emerald-600"
+            >
+              All Doctors
+            </Link>
 
             <a href="#" className="text-gray-600 hover:text-emerald-600">
               Dashboard
