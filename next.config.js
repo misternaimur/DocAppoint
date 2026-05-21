@@ -4,7 +4,9 @@
  */
 
 const nextConfig = {
-  // config options here
+  experimental: {
+    globalNotFound: true,
+  },
 };
 
 module.exports = nextConfig;

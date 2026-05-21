@@ -3,6 +3,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -12,16 +13,79 @@ import {
   faImage,
 } from "@fortawesome/free-solid-svg-icons";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { Toaster, toast } from "react-hot-toast";
+import { authClient } from "../../lib/auth-client";
 
 export default function Register() {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [socialLoading, setSocialLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Register payload:", { name, email, password, photoUrl });
+
+    if (!name || !email || !password) {
+      toast.error("Please fill in all required fields.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const result = await authClient.signUpEmail({
+        name,
+        email,
+        password,
+        image: photoUrl || undefined,
+        callbackURL: "/",
+      });
+
+      if (result?.error) {
+        throw new Error(result.error.message || "Sign up failed");
+      }
+
+      toast.success("Account created successfully!");
+      router.push("/");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Failed to sign up";
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleRegister = async () => {
+    setSocialLoading(true);
+
+    try {
+      const result = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+
+      if (result?.error) {
+        throw new Error(result.error.message || "Google sign in failed");
+      }
+
+      if (result?.data?.url) {
+        window.location.href = result.data.url;
+        return;
+      }
+
+      toast.success("Account created successfully!");
+      router.push("/");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Google sign in failed";
+      toast.error(message);
+    } finally {
+      setSocialLoading(false);
+    }
   };
 
   return (
@@ -29,6 +93,7 @@ export default function Register() {
       className="min-h-screen flex items-center justify-center px-4"
       style={{ backgroundColor: "#f8f9ff" }}
     >
+      <Toaster position="top-right" />
       <div
         className="w-full max-w-md rounded-xl shadow-lg p-8"
         style={{
@@ -125,7 +190,8 @@ export default function Register() {
           {/* Primary Button */}
           <button
             type="submit"
-            className="w-full py-2 rounded-lg font-semibold transition"
+            disabled={loading}
+            className="w-full py-2 rounded-lg font-semibold transition disabled:cursor-not-allowed disabled:opacity-70"
             style={{
               backgroundColor: "#00685f",
               color: "white",
@@ -133,7 +199,7 @@ export default function Register() {
             onMouseOver={(e) => (e.target.style.backgroundColor = "#008378")}
             onMouseOut={(e) => (e.target.style.backgroundColor = "#00685f")}
           >
-            Create Account
+            {loading ? "Creating Account..." : "Create Account"}
           </button>
         </form>
 
@@ -146,6 +212,9 @@ export default function Register() {
 
         {/* Google Button */}
         <button
+          type="button"
+          onClick={handleGoogleRegister}
+          disabled={socialLoading}
           className="w-full flex items-center justify-center gap-3 py-2 rounded-lg transition"
           style={{
             border: "1px solid #bcc9c6",
@@ -157,7 +226,7 @@ export default function Register() {
             style={{ color: "#EA4335" }} // Real Google Red
           />
           <span style={{ color: "#0b1c30", fontWeight: 500 }}>
-            Continue with Google
+            {socialLoading ? "Connecting..." : "Continue with Google"}
           </span>
         </button>
 

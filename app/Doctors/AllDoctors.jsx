@@ -19,19 +19,11 @@ import { doctors as fallbackDoctors } from "./doctorData";
 
 export default function AllDoctors() {
   const [remoteDoctors, setRemoteDoctors] = useState(null);
-  const doctorsApiUrl = process.env.NEXT_PUBLIC_DOCTORS_API_URL;
 
   useEffect(() => {
     let mounted = true;
 
-    if (!doctorsApiUrl) {
-      console.warn("NEXT_PUBLIC_DOCTORS_API_URL is not set.");
-      return () => {
-        mounted = false;
-      };
-    }
-
-    fetch(doctorsApiUrl)
+    fetch("/api/doctors")
       .then((res) => res.json())
       .then((data) => {
         if (!mounted) return;
@@ -44,7 +36,7 @@ export default function AllDoctors() {
     return () => {
       mounted = false;
     };
-  }, [doctorsApiUrl]);
+  }, []);
 
   const list = remoteDoctors || fallbackDoctors;
 

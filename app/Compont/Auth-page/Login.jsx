@@ -3,18 +3,79 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faLock } from "@fortawesome/free-solid-svg-icons";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { Toaster, toast } from "react-hot-toast";
+import { authClient } from "../../lib/auth-client";
 
 export default function Login() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [socialLoading, setSocialLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login payload:", { email, password });
+
+    if (!email || !password) {
+      toast.error("Please enter your email and password.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const result = await authClient.signIn.email({
+        email,
+        password,
+        callbackURL: "/",
+      });
+
+      if (result?.error) {
+        throw new Error(result.error.message || "Login failed");
+      }
+
+      toast.success("Login successful!");
+      router.push("/");
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Login failed";
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setSocialLoading(true);
+
+    try {
+      const result = await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+
+      if (result?.error) {
+        throw new Error(result.error.message || "Google login failed");
+      }
+
+      if (result?.data?.url) {
+        window.location.href = result.data.url;
+        return;
+      }
+
+      toast.success("Login successful!");
+      router.push("/");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Google login failed";
+      toast.error(message);
+    } finally {
+      setSocialLoading(false);
+    }
   };
 
   return (
@@ -22,6 +83,7 @@ export default function Login() {
       className="min-h-screen flex items-center justify-center px-4"
       style={{ backgroundColor: "#f8f9ff" }}
     >
+      <Toaster position="top-right" />
       <div
         className="w-full max-w-md rounded-xl shadow-lg p-8"
         style={{
@@ -41,6 +103,9 @@ export default function Login() {
         </p>
 
         <button
+          type="button"
+          onClick={handleGoogleLogin}
+          disabled={socialLoading}
           className="w-full flex items-center justify-center gap-3 py-2 rounded-lg transition mb-6"
           style={{
             border: "1px solid #bcc9c6",
@@ -49,7 +114,7 @@ export default function Login() {
         >
           <FontAwesomeIcon icon={faGoogle} style={{ color: "#EA4335" }} />
           <span style={{ color: "#0b1c30", fontWeight: 500 }}>
-            Continue with Google
+            {socialLoading ? "Connecting..." : "Continue with Google"}
           </span>
         </button>
 
@@ -98,12 +163,17 @@ export default function Login() {
 
           <button
             type="submit"
+            disabled={loading}
             className="w-full py-2 rounded-lg font-semibold transition"
-            style={{ backgroundColor: "#00685f", color: "white" }}
+            style={{
+              backgroundColor: "#00685f",
+              color: "white",
+              opacity: loading ? 0.85 : 1,
+            }}
             onMouseOver={(e) => (e.target.style.backgroundColor = "#008378")}
             onMouseOut={(e) => (e.target.style.backgroundColor = "#00685f")}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
