@@ -2,6 +2,7 @@
 
 import HeroSection from "../page/HeroSection";
 import WhyChoose from "../Compont/Share-component/WhyChoose";
+import TopRatedDoctors from "../Compont/Share-component/TopRatedDoctors";
 import HowWorks from "../Compont/Share-component/HowWorks";
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
     <div className="flex flex-col">
       <HeroSection />
       <WhyChoose />
+      <TopRatedDoctors />
       <HowWorks />
     </div>
   );
