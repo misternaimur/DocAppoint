@@ -2,6 +2,7 @@
 
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -14,9 +15,39 @@ import {
   faCircleCheck,
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
-import { doctors } from "./doctorData";
+import { doctors as fallbackDoctors } from "./doctorData";
 
 export default function AllDoctors() {
+  const [remoteDoctors, setRemoteDoctors] = useState(null);
+  const doctorsApiUrl = process.env.NEXT_PUBLIC_DOCTORS_API_URL;
+
+  useEffect(() => {
+    let mounted = true;
+
+    if (!doctorsApiUrl) {
+      console.warn("NEXT_PUBLIC_DOCTORS_API_URL is not set.");
+      return () => {
+        mounted = false;
+      };
+    }
+
+    fetch(doctorsApiUrl)
+      .then((res) => res.json())
+      .then((data) => {
+        if (!mounted) return;
+        if (Array.isArray(data) && data.length > 0) setRemoteDoctors(data);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch doctors:", err);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, [doctorsApiUrl]);
+
+  const list = remoteDoctors || fallbackDoctors;
+
   return (
     <main className="min-h-screen bg-linear-to-b from-[#f8fffc] via-white to-[#f5f9ff] overflow-hidden">
       {/* HERO SECTION */}
@@ -185,22 +216,45 @@ export default function AllDoctors() {
 
           {/* CARDS */}
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8">
-            {doctors.map((doctor) => (
+            {list.map((doctor, index) => {
+              const accents = [
+                "from-emerald-500 to-teal-500",
+                "from-sky-500 to-cyan-500",
+                "from-rose-500 to-pink-500",
+                "from-amber-500 to-orange-500",
+              ];
+
+              const initials =
+                doctor.initials ||
+                (doctor.name || "")
+                  .split(" ")
+                  .filter((part) => part !== "Dr.")
+                  .slice(0, 2)
+                  .map((part) => part[0])
+                  .join("");
+
+              const accent = doctor.accent || accents[index % accents.length];
+              const mode = doctor.mode || "In-person & Online";
+              const availability = Array.isArray(doctor.availability)
+                ? doctor.availability[0]
+                : doctor.availability || "";
+
+              return (
               <article
                 key={doctor.id}
                 className="group bg-white border border-emerald-100 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-[0_25px_60px_rgba(16,185,129,0.12)] transition-all duration-300 hover:-translate-y-2 flex flex-col"
               >
                 {/* TOP */}
                 <div
-                  className={`bg-linear-to-br ${doctor.accent} p-7 text-white h-52 flex flex-col justify-between`}
+                  className={`bg-linear-to-br ${accent} p-7 text-white h-52 flex flex-col justify-between`}
                 >
                   <div className="flex items-start justify-between">
                     <span className="px-4 py-1 rounded-full bg-white/15 text-xs font-semibold tracking-wide">
                       {doctor.badge}
                     </span>
 
-                    <div className="w-16 h-16 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center text-lg font-bold">
-                      {doctor.initials}
+                      <div className="w-16 h-16 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center text-lg font-bold">
+                      {initials}
                     </div>
                   </div>
 
@@ -220,11 +274,11 @@ export default function AllDoctors() {
                         icon={faStar}
                         className="text-amber-500"
                       />
-                      {doctor.rating}
+                      {doctor.rating ?? 4.8}
                     </div>
 
                     <span className="text-xs text-slate-400 font-medium">
-                      {doctor.mode}
+                      {mode}
                     </span>
                   </div>
 
@@ -243,7 +297,7 @@ export default function AllDoctors() {
                         icon={faClock}
                         className="text-emerald-600"
                       />
-                      <span>{doctor.availability}</span>
+                      <span>{availability}</span>
                     </div>
 
                     <div className="flex items-center gap-3">
@@ -273,7 +327,8 @@ export default function AllDoctors() {
                   </div>
                 </div>
               </article>
-            ))}
+            );
+            })}
           </div>
         </div>
       </section>

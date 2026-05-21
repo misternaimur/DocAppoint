@@ -5,10 +5,19 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import logo from "../../../public/Asset/DocAppoint.png";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  function linkClass(href) {
+    const base =
+      "relative inline-flex items-center px-1 py-1 transition transform duration-200 hover:-translate-y-1 active:scale-95";
+    const active = pathname && (pathname === href || pathname.startsWith(href));
+    return `${base} ${active ? "text-emerald-600" : "text-gray-600 hover:text-emerald-600"}`;
+  }
 
   return (
     <header className="fixed top-0 w-full z-50 bg-white shadow-sm border-b">
@@ -22,25 +31,25 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
-          <Link
-            href="/"
-            className="text-emerald-600 border-b-2 border-emerald-600 pb-1 font-medium"
-          >
-            Home
+          <Link href="/" className={linkClass("/") + " font-medium pb-1"}>
+            <span className="group">
+              Home
+              <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-emerald-600 group-hover:w-full transition-all duration-300" />
+            </span>
           </Link>
 
-          <Link
-            href="/Doctors"
-            className="text-gray-600 hover:text-emerald-600 transition"
-          >
-            All Doctors
+          <Link href="/Doctors" className={linkClass("/Doctors")}>
+            <span className="group">
+              All Doctors
+              <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-emerald-600 group-hover:w-full transition-all duration-300" />
+            </span>
           </Link>
 
-          <a
-            href="#"
-            className="text-gray-600 hover:text-emerald-600 transition"
-          >
-            Dashboard
+          <a href="#" className={linkClass("/dashboard")}>
+            <span className="group">
+              Dashboard
+              <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-emerald-600 group-hover:w-full transition-all duration-300" />
+            </span>
           </a>
         </div>
 
@@ -91,20 +100,17 @@ export default function Navbar() {
       {open && (
         <div className="md:hidden bg-white border-t shadow-sm">
           <div className="flex flex-col px-4 py-3 space-y-3">
-            <Link href="/" className="text-emerald-600 font-medium">
+            <Link href="/" className="text-emerald-600 font-medium py-2">
               Home
             </Link>
 
-            <Link
-              href="/Doctors"
-              className="text-gray-600 hover:text-emerald-600"
-            >
+            <Link href="/Doctors" className="text-gray-600 hover:text-emerald-600 py-2">
               All Doctors
             </Link>
 
-            <a href="#" className="text-gray-600 hover:text-emerald-600">
+            <Link href="#" className="text-gray-600 hover:text-emerald-600 py-2">
               Dashboard
-            </a>
+            </Link>
 
             <div className="flex gap-3 pt-2">
               <Link
