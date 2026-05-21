@@ -18,7 +18,7 @@ import { doctors } from "./doctorData";
 
 export default function AllDoctors() {
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#f8fffc] via-white to-[#f5f9ff] overflow-hidden">
+    <main className="min-h-screen bg-linear-to-b from-[#f8fffc] via-white to-[#f5f9ff] overflow-hidden">
       {/* HERO SECTION */}
       <section className="relative pt-28 pb-24 px-4 sm:px-6 lg:px-8">
         {/* Background Blur */}
@@ -129,13 +129,13 @@ export default function AllDoctors() {
                   </select>
                 </div>
 
-                <button className="w-full h-14 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold text-base shadow-lg hover:scale-[1.02] transition-all duration-300">
+                <button className="w-full h-14 rounded-2xl bg-linear-to-r from-emerald-500 to-teal-500 text-white font-semibold text-base shadow-lg hover:scale-[1.02] transition-all duration-300">
                   Find Doctors
                 </button>
               </div>
 
               {/* BOTTOM CARD */}
-              <div className="mt-8 rounded-3xl bg-gradient-to-r from-emerald-500 to-teal-500 p-6 text-white">
+              <div className="mt-8 rounded-3xl bg-linear-to-r from-emerald-500 to-teal-500 p-6 text-white">
                 <div className="flex items-start justify-between gap-5">
                   <div>
                     <h3 className="text-xl font-bold">Need Emergency Help?</h3>
@@ -192,7 +192,7 @@ export default function AllDoctors() {
               >
                 {/* TOP */}
                 <div
-                  className={`bg-gradient-to-br ${doctor.accent} p-7 text-white h-52 flex flex-col justify-between`}
+                  className={`bg-linear-to-br ${doctor.accent} p-7 text-white h-52 flex flex-col justify-between`}
                 >
                   <div className="flex items-start justify-between">
                     <span className="px-4 py-1 rounded-full bg-white/15 text-xs font-semibold tracking-wide">
@@ -265,7 +265,7 @@ export default function AllDoctors() {
                     </Link>
 
                     <Link
-                      href="/login"
+                      href={`/doctor/${doctor.id}`}
                       className="flex-1 h-12 rounded-2xl border border-slate-200 text-slate-700 font-semibold text-sm inline-flex items-center justify-center hover:bg-slate-50 transition"
                     >
                       Details

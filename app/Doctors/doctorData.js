@@ -5,6 +5,10 @@ export const doctors = [
     specialty: "Cardiologist",
     image: "https://i.ibb.co/doctor-demo.jpg",
     experience: "10 years",
+    mode: "In-person & Online",
+    badge: "Top Rated",
+    initials: "AR",
+    accent: "from-emerald-500 to-teal-500",
     availability: ["09:00 AM - 12:00 PM", "04:00 PM - 07:00 PM"],
     description:
       "Highly experienced cardiologist specializing in heart diseases, preventive care, and patient-centered treatment.",
@@ -21,6 +25,10 @@ export const doctors = [
     specialty: "Neurologist",
     image: "https://i.ibb.co/doctor-demo.jpg",
     experience: "8 years",
+    mode: "Video Consultation",
+    badge: "Available",
+    initials: "SJ",
+    accent: "from-sky-500 to-cyan-500",
     availability: ["10:00 AM - 01:00 PM", "05:00 PM - 08:00 PM"],
     description:
       "Dedicated neurologist focused on diagnosis, treatment, and long-term management of brain and nerve disorders.",
@@ -37,6 +45,10 @@ export const doctors = [
     specialty: "Dermatologist",
     image: "https://i.ibb.co/doctor-demo.jpg",
     experience: "6 years",
+    mode: "In-person & Online",
+    badge: "Popular",
+    initials: "EW",
+    accent: "from-rose-500 to-pink-500",
     availability: ["11:00 AM - 02:00 PM", "06:00 PM - 09:00 PM"],
     description:
       "Skin care specialist providing diagnosis and treatment for acne, eczema, allergy, and cosmetic concerns.",
@@ -53,6 +65,10 @@ export const doctors = [
     specialty: "Orthopedic",
     image: "https://i.ibb.co/doctor-demo.jpg",
     experience: "12 years",
+    mode: "In-person",
+    badge: "Verified",
+    initials: "DM",
+    accent: "from-amber-500 to-orange-500",
     availability: ["09:30 AM - 12:30 PM", "03:30 PM - 06:30 PM"],
     description:
       "Orthopedic expert treating bone, joint, and muscle related conditions with advanced care and guidance.",
