@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,6 +17,13 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState(false);
+  const { data: session } = authClient.useSession();
+
+  useEffect(() => {
+    if (session?.user) {
+      router.push("/");
+    }
+  }, [session, router]);
 
   const waitForToast = () =>
     new Promise((resolve) => {
@@ -25,6 +32,8 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (session?.user) return;
 
     if (!email || !password) {
       toast.error("Please enter your email and password.");
@@ -56,6 +65,7 @@ export default function Login() {
   };
 
   const handleGoogleLogin = async () => {
+    if (session?.user) return;
     setSocialLoading(true);
 
     try {

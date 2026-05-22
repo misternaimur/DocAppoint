@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,22 +21,50 @@ export default function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState(false);
+  const { data: session } = authClient.useSession();
+
+  useEffect(() => {
+    if (session?.user) {
+      router.push("/");
+    }
+  }, [session, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (session?.user) return;
+
+    // Basic required fields
     if (!name || !email || !password) {
       toast.error("Please fill in all required fields.");
       return;
     }
 
+    // Password validation
+    const hasUpper = /[A-Z]/.test(password);
+    const hasLower = /[a-z]/.test(password);
+    const hasMinLen = password.length >= 6;
+
+    if (!hasUpper || !hasLower || !hasMinLen) {
+      let msg = "Password must: ";
+      const parts = [];
+      if (!hasUpper) parts.push("contain at least 1 uppercase letter");
+      if (!hasLower) parts.push("contain at least 1 lowercase letter");
+      if (!hasMinLen) parts.push("be at least 6 characters long");
+      msg += parts.join(", ");
+      setPasswordError(msg);
+      return;
+    }
+    setPasswordError("");
+
     setLoading(true);
 
     try {
-      const result = await authClient.signUpEmail({
+      const result = await authClient.signUp.email({
         name,
         email,
         password,
@@ -44,13 +72,45 @@ export default function Register() {
         callbackURL: "/",
       });
 
-      if (result?.error) {
-        throw new Error(result.error.message || "Sign up failed");
+      // Debug/log the result for visibility when things fail in different environments
+      console.debug("signUpEmail result:", result);
+
+      // If the client provides a status code, treat non-2xx as error
+      if (result?.status && result.status >= 400) {
+        const serverMsg =
+          result?.error?.message ||
+          result?.data?.message ||
+          JSON.stringify(result);
+        throw new Error(
+          serverMsg || `Sign up failed with status ${result.status}`,
+        );
       }
 
-      toast.success("Account created successfully!");
-      router.push("/");
+      if (result?.error) {
+        const errMsg =
+          result.error.message ||
+          (result.error.data && JSON.stringify(result.error.data)) ||
+          "Sign up failed";
+        throw new Error(errMsg);
+      }
+
+      // If the server asks to redirect (rare for email sign-up), follow it
+      if (result?.data?.url) {
+        window.location.href = result.data.url;
+        return;
+      }
+
+      // Otherwise treat as success when token/user present
+      if (result?.data?.token || result?.data?.user || !result) {
+        toast.success("Account created successfully!");
+        router.push("/");
+        return;
+      }
+
+      // include the full result for easier debugging
+      throw new Error("Unexpected sign-up response: " + JSON.stringify(result));
     } catch (error) {
+      console.error("Sign up error:", error);
       const message =
         error instanceof Error ? error.message : "Failed to sign up";
       toast.error(message);
@@ -68,8 +128,11 @@ export default function Register() {
         callbackURL: "/",
       });
 
+      console.debug("signIn.social result:", result);
+
       if (result?.error) {
-        throw new Error(result.error.message || "Google sign in failed");
+        const errMsg = result.error.message || "Google sign in failed";
+        throw new Error(errMsg);
       }
 
       if (result?.data?.url) {
@@ -80,6 +143,7 @@ export default function Register() {
       toast.success("Account created successfully!");
       router.push("/");
     } catch (error) {
+      console.error("Google sign in error:", error);
       const message =
         error instanceof Error ? error.message : "Google sign in failed";
       toast.error(message);
@@ -179,13 +243,20 @@ export default function Register() {
               type="password"
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (passwordError) setPasswordError("");
+              }}
               className="w-full pl-10 pr-4 py-2 rounded-lg outline-none transition"
               style={{
                 border: "1px solid #bcc9c6",
               }}
             />
           </div>
+
+          {passwordError && (
+            <p className="text-sm text-red-600 mt-1">{passwordError}</p>
+          )}
 
           {/* Primary Button */}
           <button

@@ -27,7 +27,7 @@ export default function DashboardPage() {
   const router = useRouter();
 
   const { useSession } = authClient;
-  const { data: session, isPending } = useSession();
+  const { data: session, isPending, refetch } = useSession();
 
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -179,6 +179,32 @@ export default function DashboardPage() {
     e.preventDefault();
 
     try {
+      // send update to Better Auth endpoint
+      const body = {
+        ...(profile.name ? { name: profile.name } : {}),
+        ...(profile.photo ? { image: profile.photo } : {}),
+      };
+
+      const res = await fetch("/api/auth/update-user", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        credentials: "same-origin",
+      });
+
+      if (!res.ok) {
+        const txt = await res.text();
+        throw new Error(txt || "Failed to update profile");
+      }
+
+      // refresh session data so UI shows updated name/photo
+      try {
+        if (typeof refetch === "function") await refetch();
+        else await authClient.getSession();
+      } catch (e) {
+        console.warn("Failed to refetch session after profile update", e);
+      }
+
       setProfileOpen(false);
 
       toast.success("Profile updated!");
