@@ -1,7 +1,11 @@
 /** @format */
 
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { authClient } from "../../lib/auth-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStar,
@@ -13,9 +17,19 @@ import {
 import { doctors } from "../../Doctors/doctorData";
 
 export default function TopRatedDoctors() {
+  const router = useRouter();
+  const { data: session } = authClient.useSession();
+
   const topDoctors = [...doctors]
     .sort((left, right) => right.rating - left.rating)
     .slice(0, 3);
+
+  function handleDoctorClick(event) {
+    if (!session?.user) {
+      event.preventDefault();
+      router.push("/login");
+    }
+  }
 
   return (
     <section className="relative py-24 bg-white overflow-hidden">
@@ -124,6 +138,7 @@ export default function TopRatedDoctors() {
                 <div className="mt-8 flex gap-3">
                   <Link
                     href={`/doctor/${doctor.id}`}
+                    onClick={handleDoctorClick}
                     className="flex-1 h-12 rounded-2xl bg-emerald-600 text-white font-semibold text-sm inline-flex items-center justify-center hover:bg-emerald-700 transition"
                   >
                     View Details

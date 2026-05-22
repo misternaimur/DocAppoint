@@ -13,16 +13,27 @@ function serializeBooking(booking) {
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("userId");
     const email = searchParams.get("email");
 
-    if (!email) {
+    const filter =
+      userId || email
+        ? {
+            $or: [
+              ...(userId ? [{ userId }] : []),
+              ...(email ? [{ userEmail: email }] : []),
+            ],
+          }
+        : null;
+
+    if (!filter) {
       return NextResponse.json([]);
     }
 
     const db = await getDb();
     const bookings = await db
       .collection("bookings")
-      .find({ userEmail: email })
+      .find(filter)
       .sort({ createdAt: -1 })
       .toArray();
 
@@ -42,6 +53,7 @@ export async function POST(request) {
     const db = await getDb();
 
     const booking = {
+      userId: body.userId || "",
       userEmail: body.userEmail || "",
       doctorName: body.doctorName || "",
       patientName: body.patientName || "",

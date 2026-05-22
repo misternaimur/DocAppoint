@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "./Compont/Share-component/Navbar";
 import Footer from "./Compont/Share-component/Footer";
+import { siteMetadata } from "./seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,10 +16,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
-  title: "DocAppoint",
-  description: "DocAppoint healthcare scheduling platform",
-};
+export const metadata = siteMetadata;
 
 export default function RootLayout({ children }) {
   return (

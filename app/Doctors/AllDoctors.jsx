@@ -5,6 +5,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStar,
@@ -17,9 +18,19 @@ import {
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { doctors as fallbackDoctors } from "./doctorData";
+import { authClient } from "../lib/auth-client";
 
 export default function AllDoctors() {
   const [remoteDoctors, setRemoteDoctors] = useState(null);
+  const { data: session } = authClient.useSession();
+  const router = useRouter();
+
+  function handleDoctorClick(event) {
+    if (!session?.user) {
+      event.preventDefault();
+      router.push("/login");
+    }
+  }
 
   function getDoctorImageSrc(doctor) {
     return typeof doctor?.image === "string"
@@ -311,7 +322,8 @@ export default function AllDoctors() {
                     {/* BUTTONS */}
                     <div className="mt-8 flex gap-3">
                       <Link
-                        href={doctorId ? `/book/${doctorId}` : "/Doctors"}
+                        href={doctorId ? `/doctor/${doctorId}` : "/Doctors"}
+                        onClick={doctorId ? handleDoctorClick : undefined}
                         className="flex-1 h-12 rounded-2xl bg-emerald-600 text-white font-semibold text-sm inline-flex items-center justify-center hover:bg-emerald-700 transition"
                       >
                         Book Now

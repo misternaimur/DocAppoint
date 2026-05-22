@@ -3,6 +3,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import NotFoundDisplay from "./Compont/Share-component/NotFoundDisplay";
+import { createPageMetadata } from "./seo";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,10 +15,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata = {
+export const metadata = createPageMetadata({
   title: "404 - DocAppoint",
   description: "The page you are looking for does not exist.",
-};
+  path: "/404",
+  noindex: true,
+});
 
 export default function GlobalNotFound() {
   return (

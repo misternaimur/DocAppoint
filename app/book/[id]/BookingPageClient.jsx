@@ -11,6 +11,8 @@ import { useSession } from "../../lib/auth-client";
 export default function BookingPageClient({ doctor }) {
   const router = useRouter();
   const { data: session } = useSession();
+  const userId = session?.user?.id || "";
+  const userEmail = session?.user?.email || "";
   const [patientName, setPatientName] = useState("");
   const [gender, setGender] = useState("");
   const [phone, setPhone] = useState("");
@@ -19,12 +21,11 @@ export default function BookingPageClient({ doctor }) {
   const [loading, setLoading] = useState(false);
 
   const bookingsRoot = "/api/bookings";
-  const userEmail = session?.user?.email || "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!userEmail) {
+    if (!userId || !userEmail) {
       toast.error("Please sign in first.");
       return;
     }
@@ -41,8 +42,8 @@ export default function BookingPageClient({ doctor }) {
     }
 
     const bookingData = {
-      userId,
-      userEmail,
+      userId: userId,
+      userEmail: userEmail,
       doctorName: doctor?.name || "",
       patientName,
       gender,

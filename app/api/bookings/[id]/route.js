@@ -12,37 +12,81 @@ function parseObjectId(id) {
   }
 }
 
+function buildBookingIdFilter(bookingId) {
+  const parsedObjectId = parseObjectId(bookingId);
+
+  if (parsedObjectId) {
+    return { $or: [{ _id: parsedObjectId }, { _id: String(bookingId) }] };
+  }
+
+  return { _id: String(bookingId) };
+}
+
+async function findBookingById(db, bookingId) {
+  const filter = buildBookingIdFilter(bookingId);
+  return db.collection("bookings").findOne(filter);
+}
+
 export async function PUT(request, { params }) {
   try {
-    const bookingId = parseObjectId(params.id);
+    const body = await request.json();
+    const db = await getDb();
 
-    if (!bookingId) {
+    const existingBooking = await findBookingById(db, params.id);
+
+    if (!existingBooking) {
       return NextResponse.json(
-        { message: "Invalid booking id" },
+        { message: "Booking not found" },
+        { status: 404 },
+      );
+    }
+
+    const ownershipFilter =
+      body.userId || body.userEmail || existingBooking.userId || existingBooking.userEmail
+        ? {
+            $or: [
+              ...(body.userId ? [{ userId: body.userId }] : []),
+              ...(body.userEmail ? [{ userEmail: body.userEmail }] : []),
+              ...(existingBooking.userId ? [{ userId: existingBooking.userId }] : []),
+              ...(existingBooking.userEmail ? [{ userEmail: existingBooking.userEmail }] : []),
+            ],
+          }
+        : null;
+
+    if (!ownershipFilter) {
+      return NextResponse.json(
+        { message: "Missing booking owner" },
         { status: 400 },
       );
     }
 
-    const body = await request.json();
-    const db = await getDb();
-
     const filter = {
-      _id: bookingId,
-      userEmail: body.userEmail,
+      ...buildBookingIdFilter(params.id),
+      ...ownershipFilter,
     };
 
-    await db.collection("bookings").updateOne(filter, {
+    const result = await db.collection("bookings").updateOne(filter, {
       $set: {
         patientName: body.patientName || "",
         gender: body.gender || "",
         phone: body.phone || "",
         appointmentDate: body.appointmentDate || "",
         appointmentTime: body.appointmentTime || "",
+        userId: body.userId || existingBooking.userId || "",
+        userEmail: body.userEmail || existingBooking.userEmail || "",
+        doctorName: body.doctorName || existingBooking.doctorName || "",
         updatedAt: new Date(),
       },
     });
 
-    const updatedBooking = await db.collection("bookings").findOne(filter);
+    if (result.matchedCount === 0) {
+      return NextResponse.json(
+        { message: "Booking not found or not authorized" },
+        { status: 404 },
+      );
+    }
+
+    const updatedBooking = await findBookingById(db, params.id);
 
     if (!updatedBooking) {
       return NextResponse.json(
@@ -66,29 +110,49 @@ export async function PUT(request, { params }) {
 
 export async function DELETE(request, { params }) {
   try {
-    const bookingId = parseObjectId(params.id);
+    const { searchParams } = new URL(request.url);
+    const email = searchParams.get("email");
+    const userId = searchParams.get("userId");
+    const db = await getDb();
 
-    if (!bookingId) {
+    const existingBooking = await findBookingById(db, params.id);
+
+    if (!existingBooking) {
       return NextResponse.json(
-        { message: "Invalid booking id" },
+        { message: "Booking not found" },
+        { status: 404 },
+      );
+    }
+
+    const ownershipFilter =
+      userId || email || existingBooking.userId || existingBooking.userEmail
+        ? {
+            $or: [
+              ...(userId ? [{ userId }] : []),
+              ...(email ? [{ userEmail: email }] : []),
+              ...(existingBooking.userId ? [{ userId: existingBooking.userId }] : []),
+              ...(existingBooking.userEmail ? [{ userEmail: existingBooking.userEmail }] : []),
+            ],
+          }
+        : null;
+
+    if (!ownershipFilter) {
+      return NextResponse.json(
+        { message: "Missing booking owner" },
         { status: 400 },
       );
     }
 
-    const { searchParams } = new URL(request.url);
-    const email = searchParams.get("email");
-    const db = await getDb();
-
     const filter = {
-      _id: bookingId,
-      ...(email ? { userEmail: email } : {}),
+      ...buildBookingIdFilter(params.id),
+      ...ownershipFilter,
     };
 
     const result = await db.collection("bookings").deleteOne(filter);
 
     if (result.deletedCount === 0) {
       return NextResponse.json(
-        { message: "Booking not found" },
+        { message: "Booking not found or not authorized" },
         { status: 404 },
       );
     }

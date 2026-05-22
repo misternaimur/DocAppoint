@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Toaster, toast } from "react-hot-toast";
@@ -41,6 +41,26 @@ export default function DashboardPage() {
     photo: "",
   });
 
+  const loadBookings = useCallback(async () => {
+    const userId = session?.user?.id;
+    const email = session?.user?.email;
+
+    if (!userId && !email) {
+      setBookings([]);
+      return;
+    }
+
+    const url = `${bookingsRoot}?${new URLSearchParams({
+      ...(userId ? { userId } : {}),
+      ...(email ? { email } : {}),
+    }).toString()}`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    setBookings(Array.isArray(data) ? data : []);
+  }, [session?.user?.id, session?.user?.email]);
+
   useEffect(() => {
     if (!isPending && !session) {
       router.push("/login");
@@ -54,30 +74,7 @@ export default function DashboardPage() {
       setLoading(true);
 
       try {
-        const email = session?.user?.email;
-
-        if (!email) {
-          setBookings([]);
-          return;
-        }
-
-        const url = `${bookingsRoot}?email=${encodeURIComponent(email)}`;
-
-        const res = await fetch(url);
-
-        const data = await res.json();
-
-        const list = (
-          Array.isArray(data)
-            ? data
-            : Array.isArray(data?.data)
-              ? data.data
-              : []
-        ).filter(
-          (booking) => String(booking.userEmail || "") === String(email),
-        );
-
-        setBookings(list);
+        await loadBookings();
       } catch (error) {
         console.log(error);
         toast.error("Failed to load bookings");
@@ -87,7 +84,7 @@ export default function DashboardPage() {
     }
 
     fetchBookings();
-  }, [session]);
+  }, [session, loadBookings]);
 
   const stats = useMemo(() => {
     return {
@@ -107,23 +104,28 @@ export default function DashboardPage() {
 
   async function deleteBooking(booking) {
     const id = booking._id || booking.id;
-    const email = session?.user?.email || booking.userEmail;
+    const userId = session?.user?.id || booking.userId;
+    const userEmail = session?.user?.email || booking.userEmail;
 
     if (!confirm("Delete this appointment?")) return;
 
     try {
+      const deleteParams = new URLSearchParams();
+
+      if (userId) deleteParams.set("userId", userId);
+      if (userEmail) deleteParams.set("email", userEmail);
+
       const res = await fetch(
-        `${bookingsRoot}/${id}${email ? `?email=${encodeURIComponent(email)}` : ""}`,
+        `${bookingsRoot}/${id}${deleteParams.toString() ? `?${deleteParams.toString()}` : ""}`,
         { method: "DELETE" },
       );
 
       if (!res.ok) {
-        throw new Error("Delete failed");
+        const text = await res.text();
+        throw new Error(text || "Delete failed");
       }
 
-      setBookings((prev) =>
-        prev.filter((b) => String(b._id || b.id) !== String(id)),
-      );
+      await loadBookings();
 
       toast.success("Appointment deleted successfully!");
     } catch (error) {
@@ -138,10 +140,12 @@ export default function DashboardPage() {
     if (!editing) return;
 
     const id = editing._id || editing.id;
-    const email = session?.user?.email || editing.userEmail;
+    const userId = session?.user?.id || editing.userId;
+    const userEmail = session?.user?.email || editing.userEmail;
     const payload = {
       ...editing,
-      userEmail: email,
+      userId,
+      userEmail,
       doctorName: editing.doctorName || editing.doctor || "",
     };
 
@@ -155,18 +159,12 @@ export default function DashboardPage() {
       });
 
       if (!res.ok) {
-        throw new Error("Update failed");
+        const text = await res.text();
+        throw new Error(text || "Update failed");
       }
 
-      const updated = await res.json();
-
-      setBookings((prev) =>
-        prev.map((b) =>
-          String(b._id || b.id) === String(id)
-            ? { ...b, ...updated, _id: String(updated._id || id) }
-            : b,
-        ),
-      );
+      await res.json();
+      await loadBookings();
 
       closeEdit();
 
