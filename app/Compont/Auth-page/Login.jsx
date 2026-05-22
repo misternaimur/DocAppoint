@@ -18,6 +18,11 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [socialLoading, setSocialLoading] = useState(false);
 
+  const waitForToast = () =>
+    new Promise((resolve) => {
+      setTimeout(resolve, 900);
+    });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -40,6 +45,7 @@ export default function Login() {
       }
 
       toast.success("Login successful!");
+      await waitForToast();
       router.push("/");
     } catch (error) {
       const message = error instanceof Error ? error.message : "Login failed";
@@ -68,6 +74,7 @@ export default function Login() {
       }
 
       toast.success("Login successful!");
+      await waitForToast();
       router.push("/");
     } catch (error) {
       const message =

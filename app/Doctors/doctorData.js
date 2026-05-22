@@ -83,6 +83,104 @@ export const doctors = [
   },
 ];
 
-export function getDoctorById(id) {
-  return doctors.find((doctor) => doctor.id === id);
+const candidateUrls = [
+  process.env.NEXT_PUBLIC_DOCTORS_API_URL,
+  "http://localhost:5000/doctors",
+  "http://localhost:8080/doctors",
+].filter(Boolean);
+
+function getInitials(name = "Doctor") {
+  return name
+    .split(" ")
+    .filter((part) => part.toLowerCase() !== "dr.")
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
+}
+
+function normalizeDoctor(doctor, index) {
+  const normalizedId = String(
+    doctor?.id ?? doctor?._id ?? `doctor-${index + 1}`,
+  );
+
+  // Normalize image field to a simple string URL with a sensible fallback.
+  const rawImage = doctor?.image;
+  let imageUrl = null;
+
+  if (typeof rawImage === "string" && rawImage.trim() !== "") {
+    imageUrl = rawImage;
+  } else if (rawImage && typeof rawImage === "object") {
+    imageUrl = rawImage.url || rawImage.src || null;
+  }
+
+  if (!imageUrl) {
+    imageUrl = "/Asset/DocAppoint.png"; // public fallback
+  }
+
+  return {
+    ...doctor,
+    id: normalizedId,
+    image: imageUrl,
+    initials: doctor?.initials || getInitials(doctor?.name),
+    availability: Array.isArray(doctor?.availability)
+      ? doctor.availability
+      : [],
+  };
+}
+
+async function extractDoctors(response) {
+  const data = await response.json();
+
+  if (Array.isArray(data)) {
+    return data;
+  }
+
+  if (Array.isArray(data?.doctors)) {
+    return data.doctors;
+  }
+
+  if (Array.isArray(data?.data)) {
+    return data.data;
+  }
+
+  return null;
+}
+
+async function getDoctorsFromRemote() {
+  for (const url of candidateUrls) {
+    try {
+      const response = await fetch(url, { cache: "no-store" });
+
+      if (!response.ok) {
+        continue;
+      }
+
+      const remoteDoctors = await extractDoctors(response);
+
+      if (Array.isArray(remoteDoctors) && remoteDoctors.length > 0) {
+        return remoteDoctors.map(normalizeDoctor);
+      }
+    } catch (error) {
+      console.error(`Failed to load doctors from ${url}:`, error);
+    }
+  }
+
+  return null;
+}
+
+export async function getDoctorById(id) {
+  const remoteDoctors = await getDoctorsFromRemote();
+
+  if (Array.isArray(remoteDoctors)) {
+    const remoteDoctor = remoteDoctors.find(
+      (doctor) => String(doctor.id) === String(id),
+    );
+
+    if (remoteDoctor) {
+      return remoteDoctor;
+    }
+  }
+
+  return doctors.find((doctor) => String(doctor.id) === String(id));
 }

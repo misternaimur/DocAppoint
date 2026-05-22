@@ -54,12 +54,12 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <a href="#" className={linkClass("/dashboard")}>
+          <Link href="/dashboard" className={linkClass("/dashboard")}>
             <span className="group">
               Dashboard
               <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-emerald-600 group-hover:w-full transition-all duration-300" />
             </span>
-          </a>
+          </Link>
         </div>
 
         <div className="flex items-center gap-3">

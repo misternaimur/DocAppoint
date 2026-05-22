@@ -3,6 +3,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -19,6 +20,12 @@ import { doctors as fallbackDoctors } from "./doctorData";
 
 export default function AllDoctors() {
   const [remoteDoctors, setRemoteDoctors] = useState(null);
+
+  function getDoctorImageSrc(doctor) {
+    return typeof doctor?.image === "string"
+      ? doctor.image
+      : doctor?.image?.url || doctor?.image?.src || "/Asset/DocAppoint.png";
+  }
 
   useEffect(() => {
     let mounted = true;
@@ -216,110 +223,110 @@ export default function AllDoctors() {
                 "from-amber-500 to-orange-500",
               ];
 
-              const initials =
-                doctor.initials ||
-                (doctor.name || "")
-                  .split(" ")
-                  .filter((part) => part !== "Dr.")
-                  .slice(0, 2)
-                  .map((part) => part[0])
-                  .join("");
+              const imageSrc = getDoctorImageSrc(doctor);
 
               const accent = doctor.accent || accents[index % accents.length];
               const mode = doctor.mode || "In-person & Online";
+              const doctorId = String(doctor.id || doctor._id || "").trim();
               const availability = Array.isArray(doctor.availability)
                 ? doctor.availability[0]
                 : doctor.availability || "";
 
               return (
-              <article
-                key={doctor.id}
-                className="group bg-white border border-emerald-100 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-[0_25px_60px_rgba(16,185,129,0.12)] transition-all duration-300 hover:-translate-y-2 flex flex-col"
-              >
-                {/* TOP */}
-                <div
-                  className={`bg-linear-to-br ${accent} p-7 text-white h-52 flex flex-col justify-between`}
+                <article
+                  key={doctorId || doctor.name}
+                  className="group bg-white border border-emerald-100 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-[0_25px_60px_rgba(16,185,129,0.12)] transition-all duration-300 hover:-translate-y-2 flex flex-col"
                 >
-                  <div className="flex items-start justify-between">
-                    <span className="px-4 py-1 rounded-full bg-white/15 text-xs font-semibold tracking-wide">
-                      {doctor.badge}
-                    </span>
+                  {/* TOP */}
+                  <div
+                    className={`bg-linear-to-br ${accent} p-7 text-white h-52 flex flex-col justify-between`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <span className="px-4 py-1 rounded-full bg-white/15 text-xs font-semibold tracking-wide">
+                        {doctor.badge}
+                      </span>
 
-                      <div className="w-16 h-16 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center text-lg font-bold">
-                      {initials}
+                      <div className="w-16 h-16 overflow-hidden rounded-2xl bg-white/15 border border-white/20">
+                        <Image
+                          src={imageSrc}
+                          alt={doctor.name}
+                          width={64}
+                          height={64}
+                          className="h-full w-full object-cover"
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="text-2xl font-bold">{doctor.name}</h3>
+
+                      <p className="mt-2 text-white/90">{doctor.specialty}</p>
                     </div>
                   </div>
 
-                  <div>
-                    <h3 className="text-2xl font-bold">{doctor.name}</h3>
+                  {/* CONTENT */}
+                  <div className="p-6 flex flex-col flex-1">
+                    {/* RATING */}
+                    <div className="flex items-center justify-between">
+                      <div className="h-10 px-4 rounded-full bg-emerald-50 flex items-center gap-2 text-sm font-semibold text-emerald-700">
+                        <FontAwesomeIcon
+                          icon={faStar}
+                          className="text-amber-500"
+                        />
+                        {doctor.rating ?? 4.8}
+                      </div>
 
-                    <p className="mt-2 text-white/90">{doctor.specialty}</p>
-                  </div>
-                </div>
-
-                {/* CONTENT */}
-                <div className="p-6 flex flex-col flex-1">
-                  {/* RATING */}
-                  <div className="flex items-center justify-between">
-                    <div className="h-10 px-4 rounded-full bg-emerald-50 flex items-center gap-2 text-sm font-semibold text-emerald-700">
-                      <FontAwesomeIcon
-                        icon={faStar}
-                        className="text-amber-500"
-                      />
-                      {doctor.rating ?? 4.8}
+                      <span className="text-xs text-slate-400 font-medium">
+                        {mode}
+                      </span>
                     </div>
 
-                    <span className="text-xs text-slate-400 font-medium">
-                      {mode}
-                    </span>
-                  </div>
+                    {/* DETAILS */}
+                    <div className="mt-6 space-y-4 text-sm text-slate-600 flex-1">
+                      <div className="flex items-center gap-3">
+                        <FontAwesomeIcon
+                          icon={faLocationDot}
+                          className="text-emerald-600"
+                        />
+                        <span>{doctor.location}</span>
+                      </div>
 
-                  {/* DETAILS */}
-                  <div className="mt-6 space-y-4 text-sm text-slate-600 flex-1">
-                    <div className="flex items-center gap-3">
-                      <FontAwesomeIcon
-                        icon={faLocationDot}
-                        className="text-emerald-600"
-                      />
-                      <span>{doctor.location}</span>
+                      <div className="flex items-center gap-3">
+                        <FontAwesomeIcon
+                          icon={faClock}
+                          className="text-emerald-600"
+                        />
+                        <span>{availability}</span>
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        <FontAwesomeIcon
+                          icon={faCircleCheck}
+                          className="text-emerald-600"
+                        />
+                        <span>{doctor.experience}</span>
+                      </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
-                      <FontAwesomeIcon
-                        icon={faClock}
-                        className="text-emerald-600"
-                      />
-                      <span>{availability}</span>
-                    </div>
+                    {/* BUTTONS */}
+                    <div className="mt-8 flex gap-3">
+                      <Link
+                        href={doctorId ? `/book/${doctorId}` : "/Doctors"}
+                        className="flex-1 h-12 rounded-2xl bg-emerald-600 text-white font-semibold text-sm inline-flex items-center justify-center hover:bg-emerald-700 transition"
+                      >
+                        Book Now
+                      </Link>
 
-                    <div className="flex items-center gap-3">
-                      <FontAwesomeIcon
-                        icon={faCircleCheck}
-                        className="text-emerald-600"
-                      />
-                      <span>{doctor.experience}</span>
+                      <Link
+                        href={doctorId ? `/doctor/${doctorId}` : "/Doctors"}
+                        className="flex-1 h-12 rounded-2xl border border-slate-200 text-slate-700 font-semibold text-sm inline-flex items-center justify-center hover:bg-slate-50 transition"
+                      >
+                        Details
+                      </Link>
                     </div>
                   </div>
-
-                  {/* BUTTONS */}
-                  <div className="mt-8 flex gap-3">
-                    <Link
-                      href="/register"
-                      className="flex-1 h-12 rounded-2xl bg-emerald-600 text-white font-semibold text-sm inline-flex items-center justify-center hover:bg-emerald-700 transition"
-                    >
-                      Book Now
-                    </Link>
-
-                    <Link
-                      href={`/doctor/${doctor.id}`}
-                      className="flex-1 h-12 rounded-2xl border border-slate-200 text-slate-700 font-semibold text-sm inline-flex items-center justify-center hover:bg-slate-50 transition"
-                    >
-                      Details
-                    </Link>
-                  </div>
-                </div>
-              </article>
-            );
+                </article>
+              );
             })}
           </div>
         </div>

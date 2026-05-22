@@ -9,6 +9,28 @@ const candidateUrls = [
   "http://localhost:8080/doctors",
 ].filter(Boolean);
 
+function getInitials(name = "Doctor") {
+  return name
+    .split(" ")
+    .filter((part) => part.toLowerCase() !== "dr.")
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
+}
+
+function normalizeDoctor(doctor, index) {
+  const normalizedId = String(
+    doctor?.id ?? doctor?._id ?? `doctor-${index + 1}`,
+  );
+
+  return {
+    ...doctor,
+    id: normalizedId,
+    initials: doctor?.initials || getInitials(doctor?.name),
+  };
+}
+
 async function extractDoctors(response) {
   const data = await response.json();
 
@@ -39,12 +61,12 @@ export async function GET() {
       const doctors = await extractDoctors(response);
 
       if (Array.isArray(doctors) && doctors.length > 0) {
-        return NextResponse.json(doctors);
+        return NextResponse.json(doctors.map(normalizeDoctor));
       }
     } catch (error) {
       console.error(`Failed to load doctors from ${url}:`, error);
     }
   }
 
-  return NextResponse.json(fallbackDoctors);
+  return NextResponse.json(fallbackDoctors.map(normalizeDoctor));
 }

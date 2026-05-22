@@ -1,6 +1,7 @@
 /** @format */
 
 import Link from "next/link";
+import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faStar,
@@ -64,8 +65,20 @@ export default function TopRatedDoctors() {
                     <p className="mt-2 text-white/90">{doctor.specialty}</p>
                   </div>
 
-                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-white/20 bg-white/15 text-lg font-bold">
-                    {doctor.initials}
+                  <div className="w-16 h-16 overflow-hidden rounded-2xl border border-white/20 bg-white/15">
+                    <Image
+                      src={
+                        typeof doctor.image === "string"
+                          ? doctor.image
+                          : doctor?.image?.url ||
+                            doctor?.image?.src ||
+                            "/Asset/DocAppoint.png"
+                      }
+                      alt={doctor.name}
+                      width={64}
+                      height={64}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
                 </div>
               </div>

@@ -2,6 +2,7 @@
 
 "use client";
 
+import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -55,12 +56,18 @@ export default function HeroSection() {
                   </p>
 
                   <div className="mt-8 flex flex-wrap gap-4">
-                    <button className="rounded-full bg-[#00685f] px-7 py-3 text-sm font-bold text-white transition hover:bg-[#008378] md:text-base">
+                    <Link
+                      href="/Doctors"
+                      className="rounded-full bg-[#00685f] px-7 py-3 text-sm font-bold text-white transition hover:bg-[#008378] md:text-base"
+                    >
                       Book Appointment
-                    </button>
-                    <button className="rounded-full border border-white/70 px-7 py-3 text-sm font-bold text-white transition hover:bg-white/10 md:text-base">
+                    </Link>
+                    <Link
+                      href="/Doctors"
+                      className="rounded-full border border-white/70 px-7 py-3 text-sm font-bold text-white transition hover:bg-white/10 md:text-base"
+                    >
                       How It Works
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
