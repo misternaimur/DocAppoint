@@ -16,7 +16,7 @@ export async function proxy(request) {
 
   const session = await sessionResponse.json();
 
-  if (!session) {
+  if (!session?.user) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
@@ -24,5 +24,5 @@ export async function proxy(request) {
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/doctor/:path*","/book/:path"],
+  matcher: ["/dashboard/:path*", "/doctor/:path*", "/book/:path*"],
 };
