@@ -18,14 +18,7 @@ export default function BookingPageClient({ doctor }) {
   const [appointmentTime, setAppointmentTime] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const bookingApiBase =
-    process.env.NEXT_PUBLIC_API_URL ||
-    process.env.NEXT_PUBLIC_DOCTORS_API_URL?.replace(/\/doctors\/?$/, "") ||
-    "";
-
-  const bookingsRoot = bookingApiBase
-    ? `${bookingApiBase}/bookings`
-    : "/api/bookings";
+  const bookingsRoot = "/api/bookings";
   const userEmail = session?.user?.email || "";
 
   const handleSubmit = async (e) => {
@@ -48,6 +41,7 @@ export default function BookingPageClient({ doctor }) {
     }
 
     const bookingData = {
+      userId,
       userEmail,
       doctorName: doctor?.name || "",
       patientName,

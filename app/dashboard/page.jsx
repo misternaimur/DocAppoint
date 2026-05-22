@@ -21,19 +21,13 @@ import {
 
 import { authClient } from "../lib/auth-client";
 
-const apiBase =
-  process.env.NEXT_PUBLIC_API_URL ||
-  process.env.NEXT_PUBLIC_DOCTORS_API_URL?.replace(/\/doctors\/?$/, "") ||
-  "";
-
-const bookingsRoot = apiBase ? `${apiBase}/bookings` : "/api/bookings";
+const bookingsRoot = "/api/bookings";
 
 export default function DashboardPage() {
   const router = useRouter();
 
   const { useSession } = authClient;
   const { data: session, isPending } = useSession();
-
 
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -46,8 +40,6 @@ export default function DashboardPage() {
     name: "",
     photo: "",
   });
-
-
 
   useEffect(() => {
     if (!isPending && !session) {
