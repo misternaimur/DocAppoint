@@ -1,3 +1,5 @@
+/** @format */
+
 export const doctors = [
   {
     id: "d1",
@@ -82,5 +84,5 @@ export const doctors = [
 ];
 
 export function getDoctorById(id) {
-  return doctors.find((doctor) => doctor.id === id) || doctors[0];
+  return doctors.find((doctor) => doctor.id === id);
 }
