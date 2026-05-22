@@ -15,6 +15,8 @@ const nextConfig = {
       { protocol: "https", hostname: "randomuser.me" },
       { protocol: "https", hostname: "i.ibb.co" },
       { protocol: "https", hostname: "doc-appoint-eight.vercel.app" },
+      { protocol: "https", hostname: "media.istockphoto.com" },
+      { protocol: "https", hostname: "images.unsplash.com" },
     ],
   },
 };

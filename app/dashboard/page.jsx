@@ -31,6 +31,8 @@ export default function DashboardPage() {
 
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [editing, setEditing] = useState(null);
 
@@ -85,6 +87,25 @@ export default function DashboardPage() {
 
     fetchBookings();
   }, [session, loadBookings]);
+
+  function handleSearch(e) {
+    e?.preventDefault?.();
+    setSearchQuery((searchInput || "").trim().toLowerCase());
+  }
+
+  function clearSearch() {
+    setSearchInput("");
+    setSearchQuery("");
+  }
+
+  const displayedBookings = useMemo(() => {
+    const q = (searchQuery || "").trim().toLowerCase();
+    if (!q) return bookings;
+    return bookings.filter((b) => {
+      const name = (b.doctorName || b.doctor || "").toString().toLowerCase();
+      return name.includes(q);
+    });
+  }, [bookings, searchQuery]);
 
   const stats = useMemo(() => {
     return {
@@ -392,8 +413,35 @@ export default function DashboardPage() {
                   </p>
                 </div>
 
-                <div className="rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-700">
-                  {bookings.length} Total
+                <div className="flex items-center gap-4">
+                  <div className="rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-700">
+                    {displayedBookings.length} Total
+                  </div>
+
+                  <form onSubmit={handleSearch} className="flex items-center gap-2">
+                    <input
+                      type="text"
+                      placeholder="Search by doctor name"
+                      value={searchInput}
+                      onChange={(e) => setSearchInput(e.target.value)}
+                      className="h-10 rounded-lg border border-slate-200 px-3 outline-none"
+                    />
+
+                    <button
+                      type="submit"
+                      className="rounded-lg bg-emerald-500 px-3 py-2 text-sm font-semibold text-white"
+                    >
+                      Search
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={clearSearch}
+                      className="rounded-lg border px-3 py-2 text-sm font-semibold"
+                    >
+                      Clear
+                    </button>
+                  </form>
                 </div>
               </div>
 
@@ -428,7 +476,7 @@ export default function DashboardPage() {
 
               {/* BOOKING CARDS */}
               <div className="mt-8 grid gap-6">
-                {bookings.map((b) => (
+                {displayedBookings.map((b) => (
                   <div
                     key={b._id || b.id}
                     className="group rounded-[2rem] border border-white/60 bg-white/80 p-6 shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl"

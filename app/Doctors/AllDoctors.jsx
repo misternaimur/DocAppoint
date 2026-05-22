@@ -2,7 +2,7 @@
 
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -57,6 +57,29 @@ export default function AllDoctors() {
   }, []);
 
   const list = remoteDoctors || fallbackDoctors;
+
+  const [searchInput, setSearchInput] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  function handleSearch(e) {
+    e?.preventDefault?.();
+    setSearchQuery((searchInput || "").trim().toLowerCase());
+  }
+
+  function clearSearch() {
+    setSearchInput("");
+    setSearchQuery("");
+  }
+
+  const displayedList = useMemo(() => {
+    const q = (searchQuery || "").trim().toLowerCase();
+    if (!q) return list;
+    return list.filter((d) => {
+      const name = (d.name || "").toString().toLowerCase();
+      const specialty = (d.specialty || "").toString().toLowerCase();
+      return name.includes(q) || specialty.includes(q);
+    });
+  }, [list, searchQuery]);
 
   return (
     <main className="min-h-screen bg-linear-to-b from-[#f8fffc] via-white to-[#f5f9ff] overflow-hidden">
@@ -151,6 +174,8 @@ export default function AllDoctors() {
                     <input
                       type="text"
                       placeholder="Search doctor or specialty"
+                      value={searchInput}
+                      onChange={(e) => setSearchInput(e.target.value)}
                       className="w-full bg-transparent outline-none text-sm"
                     />
                   </div>
@@ -170,9 +195,23 @@ export default function AllDoctors() {
                   </select>
                 </div>
 
-                <button className="w-full h-14 rounded-2xl bg-linear-to-r from-emerald-500 to-teal-500 text-white font-semibold text-base shadow-lg hover:scale-[1.02] transition-all duration-300">
-                  Find Doctors
-                </button>
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    onClick={handleSearch}
+                    className="flex-1 h-14 rounded-2xl bg-linear-to-r from-emerald-500 to-teal-500 text-white font-semibold text-base shadow-lg hover:scale-[1.02] transition-all duration-300"
+                  >
+                    Find Doctors
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={clearSearch}
+                    className="h-14 px-4 rounded-2xl border bg-white text-slate-700 font-semibold"
+                  >
+                    Clear
+                  </button>
+                </div>
               </div>
 
               {/* BOTTOM CARD */}
@@ -226,7 +265,7 @@ export default function AllDoctors() {
 
           {/* CARDS */}
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8">
-            {list.map((doctor, index) => {
+            {displayedList.map((doctor, index) => {
               const accents = [
                 "from-emerald-500 to-teal-500",
                 "from-sky-500 to-cyan-500",
