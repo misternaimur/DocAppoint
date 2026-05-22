@@ -159,7 +159,7 @@ export default function Register() {
     >
       <Toaster position="top-right" />
       <div
-        className="w-full max-w-md rounded-xl shadow-lg p-8"
+        className="w-full max-w-md rounded-xl p-6 shadow-lg sm:p-8"
         style={{
           backgroundColor: "#ffffff",
           border: "1px solid #bcc9c6",
@@ -190,7 +190,7 @@ export default function Register() {
               placeholder="Full Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-lg outline-none transition"
+              className="w-full rounded-lg px-4 py-2 pl-10 outline-none transition"
               style={{
                 border: "1px solid #bcc9c6",
               }}
@@ -208,7 +208,7 @@ export default function Register() {
               placeholder="Email Address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-lg outline-none transition"
+              className="w-full rounded-lg px-4 py-2 pl-10 outline-none transition"
               style={{
                 border: "1px solid #bcc9c6",
               }}
@@ -226,7 +226,7 @@ export default function Register() {
               placeholder="Photo URL (optional)"
               value={photoUrl}
               onChange={(e) => setPhotoUrl(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-lg outline-none transition"
+              className="w-full rounded-lg px-4 py-2 pl-10 outline-none transition"
               style={{
                 border: "1px solid #bcc9c6",
               }}
@@ -247,7 +247,7 @@ export default function Register() {
                 setPassword(e.target.value);
                 if (passwordError) setPasswordError("");
               }}
-              className="w-full pl-10 pr-4 py-2 rounded-lg outline-none transition"
+              className="w-full rounded-lg px-4 py-2 pl-10 outline-none transition"
               style={{
                 border: "1px solid #bcc9c6",
               }}
@@ -286,7 +286,7 @@ export default function Register() {
           type="button"
           onClick={handleGoogleRegister}
           disabled={socialLoading}
-          className="w-full flex items-center justify-center gap-3 py-2 rounded-lg transition"
+          className="flex w-full items-center justify-center gap-3 rounded-lg py-2 transition"
           style={{
             border: "1px solid #bcc9c6",
             backgroundColor: "#ffffff",

@@ -82,24 +82,28 @@ export default function BookingPageClient({ doctor }) {
   };
 
   return (
-    <div className="min-h-screen bg-linear-to-b from-[#f8fffc] via-white to-[#f5f9ff] px-4 py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-linear-to-b from-[#f8fffc] via-white to-[#f5f9ff] px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
       <Toaster />
 
-      <div className="mx-auto grid max-w-6xl grid-cols-1 items-start gap-10 lg:grid-cols-2">
-        <aside className="overflow-hidden rounded-3xl border border-emerald-100 bg-white/70 p-6 shadow-lg backdrop-blur-lg">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-10">
+        <aside className="overflow-hidden rounded-3xl border border-emerald-100 bg-white/70 p-4 shadow-lg backdrop-blur-lg sm:p-6">
           <div
-            className={`rounded-2xl bg-linear-to-br p-6 text-white ${doctor?.accent || "from-emerald-500 to-teal-500"}`}
+            className={`rounded-2xl bg-linear-to-br p-5 text-white sm:p-6 ${doctor?.accent || "from-emerald-500 to-teal-500"}`}
           >
-            <div className="flex items-start justify-between gap-4">
-              <div>
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+              <div className="min-w-0">
                 <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
                   {doctor?.badge || "Top Rated"}
                 </span>
-                <h2 className="mt-6 text-3xl font-extrabold">{doctor?.name}</h2>
-                <p className="mt-2 text-white/90">{doctor?.specialty}</p>
+                <h2 className="mt-6 text-2xl font-extrabold sm:text-3xl">
+                  {doctor?.name}
+                </h2>
+                <p className="mt-2 text-sm text-white/90 sm:text-base">
+                  {doctor?.specialty}
+                </p>
               </div>
 
-              <div className="flex flex-col items-end">
+              <div className="flex flex-row items-center gap-4 sm:flex-col sm:items-end">
                 <div className="h-20 w-20 overflow-hidden rounded-2xl bg-white/15">
                   <Image
                     src={
@@ -116,13 +120,13 @@ export default function BookingPageClient({ doctor }) {
                   />
                 </div>
 
-                <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-sm">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-2 text-sm sm:mt-4">
                   <span className="font-semibold">{doctor?.rating ?? 4.8}</span>
                 </div>
               </div>
             </div>
 
-            <div className="mt-6 grid grid-cols-1 gap-3 text-sm text-white/90">
+            <div className="mt-6 grid grid-cols-1 gap-3 text-sm text-white/90 sm:text-base">
               <div className="flex items-center justify-between gap-4">
                 <span>Experience</span>
                 <strong>{doctor?.experience}</strong>
@@ -144,8 +148,8 @@ export default function BookingPageClient({ doctor }) {
           </div>
         </aside>
 
-        <div className="rounded-3xl border border-emerald-100 bg-white p-8 shadow-lg">
-          <h2 className="text-2xl font-bold text-slate-900">
+        <div className="rounded-3xl border border-emerald-100 bg-white p-5 shadow-lg sm:p-8">
+          <h2 className="text-2xl font-bold text-slate-900 sm:text-2xl">
             Book Appointment
           </h2>
           <p className="mt-2 text-sm text-slate-500">
@@ -165,7 +169,7 @@ export default function BookingPageClient({ doctor }) {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label className="block text-sm font-medium text-slate-700">
                   Gender
@@ -195,7 +199,7 @@ export default function BookingPageClient({ doctor }) {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <label className="block text-sm font-medium text-slate-700">
                   Appointment Date

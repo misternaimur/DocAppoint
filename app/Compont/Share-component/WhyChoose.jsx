@@ -35,7 +35,7 @@ export default function WhyChoose() {
   ];
 
   return (
-    <section className="relative py-24 bg-gradient-to-b from-[#f8fbff] to-white overflow-hidden">
+    <section className="relative overflow-hidden bg-linear-to-b from-[#f8fbff] to-white py-20 sm:py-24">
       {/* Background Blur */}
       <div className="absolute top-0 left-0 w-72 h-72 bg-emerald-100 rounded-full blur-3xl opacity-40"></div>
       <div className="absolute bottom-0 right-0 w-72 h-72 bg-teal-100 rounded-full blur-3xl opacity-40"></div>
@@ -68,7 +68,7 @@ export default function WhyChoose() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-100 rounded-full blur-3xl opacity-0 group-hover:opacity-40 transition duration-500"></div>
 
               {/* Icon */}
-              <div className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+              <div className="relative mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-emerald-500 to-teal-500 shadow-lg transition-transform duration-300 group-hover:scale-110">
                 <FontAwesomeIcon
                   icon={f.icon}
                   className="text-white text-2xl"
@@ -84,14 +84,14 @@ export default function WhyChoose() {
               <p className="text-slate-500 leading-relaxed text-sm">{f.desc}</p>
 
               {/* Bottom Border */}
-              <div className="mt-6 h-1 w-0 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full group-hover:w-full transition-all duration-500"></div>
+              <div className="mt-6 h-1 w-0 rounded-full bg-linear-to-r from-emerald-500 to-teal-500 transition-all duration-500 group-hover:w-full"></div>
             </div>
           ))}
         </div>
 
         {/* Bottom CTA */}
         <div className="mt-20 text-center">
-          <button className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-10 py-4 rounded-full font-semibold shadow-lg hover:scale-105 hover:shadow-2xl transition-all duration-300">
+          <button className="rounded-full bg-linear-to-r from-emerald-500 to-teal-500 px-8 py-4 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl sm:px-10">
             Explore Doctors
           </button>
 

@@ -32,11 +32,13 @@ export default function Navbar() {
   const userInitial = user?.name?.charAt(0)?.toUpperCase() || "U";
 
   return (
-    <header className="fixed top-0 w-full z-50 bg-white shadow-sm border-b">
-      <nav className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 h-16">
-        <div className="flex items-center gap-2">
-          <Image src={logo} alt="DocAppoint Logo" width={45} height={45} />
-          <h1 className="text-xl font-bold text-emerald-600">DocAppoint</h1>
+    <header className="fixed top-0 z-50 w-full border-b bg-white shadow-sm">
+      <nav className="mx-auto flex h-auto max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 md:h-16 md:px-8">
+        <div className="flex min-w-0 items-center gap-2">
+          <Image src={logo} alt="DocAppoint Logo" width={42} height={42} />
+          <h1 className="truncate text-lg font-bold text-emerald-600 sm:text-xl">
+            DocAppoint
+          </h1>
         </div>
 
         <div className="hidden md:flex items-center gap-8">
@@ -113,7 +115,7 @@ export default function Navbar() {
 
           <button
             onClick={() => setOpen(!open)}
-            className="md:hidden p-2"
+            className="rounded-lg p-2 md:hidden"
             aria-label="menu"
           >
             {open ? (
@@ -138,8 +140,8 @@ export default function Navbar() {
       </nav>
 
       {open && (
-        <div className="md:hidden bg-white border-t shadow-sm">
-          <div className="flex flex-col px-4 py-3 space-y-3">
+        <div className="border-t bg-white shadow-sm md:hidden">
+          <div className="flex flex-col gap-3 px-4 py-3">
             <Link href="/" className="text-emerald-600 font-medium py-2">
               Home
             </Link>
@@ -158,9 +160,9 @@ export default function Navbar() {
               Dashboard
             </Link>
 
-            <div className="flex items-center gap-3 pt-2">
+            <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center">
               {isPending ? (
-                <div className="h-10 w-full rounded-full bg-emerald-50 animate-pulse" />
+                <div className="h-10 w-full rounded-full bg-emerald-50 animate-pulse sm:w-32" />
               ) : user ? (
                 <>
                   <div className="h-10 w-10 overflow-hidden rounded-full border border-emerald-200 bg-emerald-50">
@@ -182,7 +184,7 @@ export default function Navbar() {
 
                   <button
                     onClick={handleLogout}
-                    className="flex-1 bg-emerald-600 text-white py-2 rounded-full text-center"
+                    className="rounded-full bg-emerald-600 py-2 text-center text-white sm:flex-1"
                   >
                     Logout
                   </button>
@@ -191,14 +193,14 @@ export default function Navbar() {
                 <>
                   <Link
                     href="/login"
-                    className="flex-1 rounded-full border border-emerald-200 py-2 text-center font-semibold text-emerald-700"
+                    className="rounded-full border border-emerald-200 py-2 text-center font-semibold text-emerald-700 sm:flex-1"
                   >
                     Login
                   </Link>
 
                   <Link
                     href="/register"
-                    className="flex-1 rounded-full bg-emerald-600 py-2 text-center font-semibold text-white"
+                    className="rounded-full bg-emerald-600 py-2 text-center font-semibold text-white sm:flex-1"
                   >
                     Register
                   </Link>

@@ -84,13 +84,13 @@ export default function AllDoctors() {
   return (
     <main className="min-h-screen bg-linear-to-b from-[#f8fffc] via-white to-[#f5f9ff] overflow-hidden">
       {/* HERO SECTION */}
-      <section className="relative pt-28 pb-24 px-4 sm:px-6 lg:px-8">
+      <section className="relative px-4 pb-16 pt-24 sm:px-6 sm:pb-20 lg:px-8 lg:pt-28 lg:pb-24">
         {/* Background Blur */}
         <div className="absolute top-0 left-0 w-80 h-80 bg-emerald-200/30 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 right-0 w-80 h-80 bg-sky-200/30 rounded-full blur-3xl"></div>
 
         <div className="relative max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-14 items-center">
+          <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
             {/* LEFT */}
             <div>
               <div className="inline-flex items-center gap-2 bg-white border border-emerald-100 px-5 py-2 rounded-full shadow-sm text-sm font-semibold text-emerald-700">
@@ -98,20 +98,20 @@ export default function AllDoctors() {
                 Trusted Healthcare Platform
               </div>
 
-              <h1 className="mt-7 text-5xl md:text-6xl font-black leading-tight text-slate-900">
+              <h1 className="mt-7 text-3xl font-black leading-tight text-slate-900 sm:text-4xl md:text-6xl">
                 Find The Best
                 <span className="block text-emerald-600">
                   Specialist Doctors
                 </span>
               </h1>
 
-              <p className="mt-6 text-lg leading-8 text-slate-600 max-w-2xl">
+              <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
                 Discover experienced doctors, compare specialties, and instantly
                 book appointments from the comfort of your home.
               </p>
 
               {/* STATS */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mt-10">
+              <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-5">
                 {[
                   {
                     icon: faStethoscope,
@@ -131,7 +131,7 @@ export default function AllDoctors() {
                 ].map((item, idx) => (
                   <div
                     key={idx}
-                    className="h-36 rounded-xl border border-emerald-100 bg-white shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col items-center justify-center text-center px-5"
+                    className="flex h-32 flex-col items-center justify-center rounded-xl border border-emerald-100 bg-white px-5 text-center shadow-sm transition-all duration-300 hover:shadow-xl sm:h-36"
                   >
                     <div className="w-14 h-14 rounded-2xl bg-emerald-100 flex items-center justify-center mb-4">
                       <FontAwesomeIcon
@@ -149,7 +149,7 @@ export default function AllDoctors() {
             </div>
 
             {/* RIGHT */}
-            <div className="bg-white/90 backdrop-blur-xl border border-emerald-100 rounded-[2.5rem] p-8 shadow-[0_25px_80px_rgba(16,185,129,0.10)]">
+            <div className="rounded-[2rem] border border-emerald-100 bg-white/90 p-5 shadow-[0_25px_80px_rgba(16,185,129,0.10)] backdrop-blur-xl sm:p-8">
               <h2 className="text-2xl font-bold text-slate-900">
                 Book Appointment
               </h2>
@@ -165,7 +165,7 @@ export default function AllDoctors() {
                     Search Doctor
                   </label>
 
-                  <div className="h-14 rounded-2xl border border-slate-200 bg-slate-50 flex items-center px-4 gap-3">
+                  <div className="flex h-14 items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4">
                     <FontAwesomeIcon
                       icon={faMagnifyingGlass}
                       className="text-slate-400"
@@ -195,11 +195,11 @@ export default function AllDoctors() {
                   </select>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                   <button
                     type="button"
                     onClick={handleSearch}
-                    className="flex-1 h-14 rounded-2xl bg-linear-to-r from-emerald-500 to-teal-500 text-white font-semibold text-base shadow-lg hover:scale-[1.02] transition-all duration-300"
+                    className="h-14 flex-1 rounded-2xl bg-linear-to-r from-emerald-500 to-teal-500 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02]"
                   >
                     Find Doctors
                   </button>
@@ -207,7 +207,7 @@ export default function AllDoctors() {
                   <button
                     type="button"
                     onClick={clearSearch}
-                    className="h-14 px-4 rounded-2xl border bg-white text-slate-700 font-semibold"
+                    className="h-14 rounded-2xl border bg-white px-4 font-semibold text-slate-700"
                   >
                     Clear
                   </button>
@@ -243,20 +243,20 @@ export default function AllDoctors() {
       <section className="px-4 sm:px-6 lg:px-8 pb-24">
         <div className="max-w-7xl mx-auto">
           {/* TOP */}
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-12">
+          <div className="mb-12 flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
             <div>
-              <h2 className="text-4xl font-bold text-slate-900">
+              <h2 className="text-3xl font-bold text-slate-900 sm:text-4xl">
                 Available Doctors
               </h2>
 
-              <p className="mt-3 text-slate-500 text-lg">
+              <p className="mt-3 text-base text-slate-500 sm:text-lg">
                 Trusted specialists available for appointments.
               </p>
             </div>
 
             <Link
               href="/register"
-              className="h-14 px-7 rounded-2xl border border-emerald-200 bg-white text-emerald-700 font-semibold inline-flex items-center justify-center gap-3 shadow-sm hover:bg-emerald-50 transition"
+              className="inline-flex h-14 items-center justify-center gap-3 rounded-2xl border border-emerald-200 bg-white px-7 font-semibold text-emerald-700 shadow-sm transition hover:bg-emerald-50"
             >
               Join Now
               <FontAwesomeIcon icon={faArrowRight} />
@@ -264,7 +264,7 @@ export default function AllDoctors() {
           </div>
 
           {/* CARDS */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4 xl:gap-8">
             {displayedList.map((doctor, index) => {
               const accents = [
                 "from-emerald-500 to-teal-500",
@@ -285,18 +285,18 @@ export default function AllDoctors() {
               return (
                 <article
                   key={doctorId || doctor.name}
-                  className="group bg-white border border-emerald-100 rounded-[2rem] overflow-hidden shadow-sm hover:shadow-[0_25px_60px_rgba(16,185,129,0.12)] transition-all duration-300 hover:-translate-y-2 flex flex-col"
+                  className="group flex flex-col overflow-hidden rounded-[2rem] border border-emerald-100 bg-white shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_25px_60px_rgba(16,185,129,0.12)]"
                 >
                   {/* TOP */}
                   <div
-                    className={`bg-linear-to-br ${accent} p-7 text-white h-52 flex flex-col justify-between`}
+                    className={`bg-linear-to-br ${accent} flex h-52 flex-col justify-between p-6 text-white sm:p-7`}
                   >
-                    <div className="flex items-start justify-between">
+                    <div className="flex items-start justify-between gap-3">
                       <span className="px-4 py-1 rounded-full bg-white/15 text-xs font-semibold tracking-wide">
                         {doctor.badge}
                       </span>
 
-                      <div className="w-16 h-16 overflow-hidden rounded-2xl bg-white/15 border border-white/20">
+                      <div className="h-16 w-16 overflow-hidden rounded-2xl border border-white/20 bg-white/15">
                         <Image
                           src={imageSrc}
                           alt={doctor.name}
@@ -308,16 +308,20 @@ export default function AllDoctors() {
                     </div>
 
                     <div>
-                      <h3 className="text-2xl font-bold">{doctor.name}</h3>
+                      <h3 className="text-xl font-bold sm:text-2xl">
+                        {doctor.name}
+                      </h3>
 
-                      <p className="mt-2 text-white/90">{doctor.specialty}</p>
+                      <p className="mt-2 text-sm text-white/90 sm:text-base">
+                        {doctor.specialty}
+                      </p>
                     </div>
                   </div>
 
                   {/* CONTENT */}
                   <div className="p-6 flex flex-col flex-1">
                     {/* RATING */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-3">
                       <div className="h-10 px-4 rounded-full bg-emerald-50 flex items-center gap-2 text-sm font-semibold text-emerald-700">
                         <FontAwesomeIcon
                           icon={faStar}
@@ -332,7 +336,7 @@ export default function AllDoctors() {
                     </div>
 
                     {/* DETAILS */}
-                    <div className="mt-6 space-y-4 text-sm text-slate-600 flex-1">
+                    <div className="mt-6 flex-1 space-y-4 text-sm text-slate-600">
                       <div className="flex items-center gap-3">
                         <FontAwesomeIcon
                           icon={faLocationDot}
@@ -359,18 +363,18 @@ export default function AllDoctors() {
                     </div>
 
                     {/* BUTTONS */}
-                    <div className="mt-8 flex gap-3">
+                    <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                       <Link
                         href={doctorId ? `/doctor/${doctorId}` : "/Doctors"}
                         onClick={doctorId ? handleDoctorClick : undefined}
-                        className="flex-1 h-12 rounded-2xl bg-emerald-600 text-white font-semibold text-sm inline-flex items-center justify-center hover:bg-emerald-700 transition"
+                        className="inline-flex h-12 flex-1 items-center justify-center rounded-2xl bg-emerald-600 text-sm font-semibold text-white transition hover:bg-emerald-700"
                       >
                         Book Now
                       </Link>
 
                       <Link
                         href={doctorId ? `/doctor/${doctorId}` : "/Doctors"}
-                        className="flex-1 h-12 rounded-2xl border border-slate-200 text-slate-700 font-semibold text-sm inline-flex items-center justify-center hover:bg-slate-50 transition"
+                        className="inline-flex h-12 flex-1 items-center justify-center rounded-2xl border border-slate-200 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
                       >
                         Details
                       </Link>

@@ -275,7 +275,7 @@ export default function DashboardPage() {
 
               setProfileOpen(true);
             }}
-            className="rounded-2xl bg-linear-to-r from-emerald-500 to-cyan-500 px-6 py-4 font-semibold text-white shadow-xl transition-all duration-300 hover:scale-105"
+            className="rounded-2xl bg-linear-to-r from-emerald-500 to-cyan-500 px-6 py-4 font-semibold text-white shadow-xl transition-all duration-300 hover:scale-105 sm:self-start"
           >
             Edit Profile
           </button>
@@ -315,7 +315,7 @@ export default function DashboardPage() {
               </div>
 
               {/* QUICK STATS */}
-              <div className="mt-8 grid grid-cols-2 gap-4">
+              <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div className="rounded-3xl bg-linear-to-br from-emerald-500 to-emerald-400 p-5 text-white shadow-lg">
                   <div className="text-3xl font-black">{stats.total}</div>
 
@@ -413,18 +413,18 @@ export default function DashboardPage() {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
                   <div className="rounded-full bg-emerald-100 px-4 py-2 text-sm font-semibold text-emerald-700">
                     {displayedBookings.length} Total
                   </div>
 
-                  <form onSubmit={handleSearch} className="flex items-center gap-2">
+                  <form onSubmit={handleSearch} className="flex flex-col gap-2 sm:flex-row sm:items-center">
                     <input
                       type="text"
                       placeholder="Search by doctor name"
                       value={searchInput}
                       onChange={(e) => setSearchInput(e.target.value)}
-                      className="h-10 rounded-lg border border-slate-200 px-3 outline-none"
+                      className="h-10 w-full rounded-lg border border-slate-200 px-3 outline-none sm:w-56"
                     />
 
                     <button
@@ -483,7 +483,7 @@ export default function DashboardPage() {
                   >
                     <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                       {/* LEFT */}
-                      <div className="flex items-start gap-5">
+                      <div className="flex flex-col items-start gap-4 sm:flex-row sm:gap-5">
                         <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-linear-to-br from-emerald-500 to-cyan-500 text-white shadow-xl">
                           <UserRound size={35} />
                         </div>
@@ -517,10 +517,10 @@ export default function DashboardPage() {
                       </div>
 
                       {/* ACTION BUTTONS */}
-                      <div className="flex items-center gap-3">
+                        <div className="flex flex-col gap-3 sm:flex-row">
                         <button
                           onClick={() => openEdit(b)}
-                          className="flex items-center gap-2 rounded-2xl bg-linear-to-r from-emerald-500 to-cyan-500 px-5 py-3 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105"
+                            className="inline-flex items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-emerald-500 to-cyan-500 px-5 py-3 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105"
                         >
                           <Pencil size={18} />
                           Update
@@ -528,7 +528,7 @@ export default function DashboardPage() {
 
                         <button
                           onClick={() => deleteBooking(b)}
-                          className="flex items-center gap-2 rounded-2xl border border-red-200 bg-red-50 px-5 py-3 font-semibold text-red-600 transition-all duration-300 hover:bg-red-100"
+                            className="inline-flex items-center justify-center gap-2 rounded-2xl border border-red-200 bg-red-50 px-5 py-3 font-semibold text-red-600 transition-all duration-300 hover:bg-red-100"
                         >
                           <Trash2 size={18} />
                           Delete

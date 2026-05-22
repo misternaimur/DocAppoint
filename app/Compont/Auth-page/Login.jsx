@@ -12,6 +12,8 @@ import { Toaster, toast } from "react-hot-toast";
 import { authClient } from "../../lib/auth-client";
 
 export default function Login() {
+
+ 
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -102,7 +104,7 @@ export default function Login() {
     >
       <Toaster position="top-right" />
       <div
-        className="w-full max-w-md rounded-xl shadow-lg p-8"
+        className="w-full max-w-md rounded-xl p-6 shadow-lg sm:p-8"
         style={{
           backgroundColor: "#ffffff",
           border: "1px solid #bcc9c6",
@@ -123,7 +125,7 @@ export default function Login() {
           type="button"
           onClick={handleGoogleLogin}
           disabled={socialLoading}
-          className="w-full flex items-center justify-center gap-3 py-2 rounded-lg transition mb-6"
+          className="mb-6 flex w-full items-center justify-center gap-3 rounded-lg py-2 transition"
           style={{
             border: "1px solid #bcc9c6",
             backgroundColor: "#ffffff",
@@ -152,7 +154,7 @@ export default function Login() {
               placeholder="Email Address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-lg outline-none transition"
+              className="w-full rounded-lg px-4 py-2 pl-10 outline-none transition"
               style={{ border: "1px solid #bcc9c6" }}
             />
           </div>
@@ -167,7 +169,7 @@ export default function Login() {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-lg outline-none transition"
+              className="w-full rounded-lg px-4 py-2 pl-10 outline-none transition"
               style={{ border: "1px solid #bcc9c6" }}
             />
           </div>

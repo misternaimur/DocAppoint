@@ -51,13 +51,13 @@ export default function DoctorDetailsClient({ doctor }) {
       {/* HERO */}
       <section className="relative overflow-hidden">
         {/* BACKGROUND */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#08131f] via-[#102235] to-[#00685f]" />
+        <div className="absolute inset-0 bg-linear-to-br from-[#08131f] via-[#102235] to-[#00685f]" />
 
-        <div className="absolute left-[-120px] top-[-120px] h-[320px] w-[320px] rounded-full bg-[#6bd8cb]/20 blur-3xl" />
+        <div className="absolute -left-30 -top-30 h-80 w-80 rounded-full bg-[#6bd8cb]/20 blur-3xl" />
 
-        <div className="absolute right-[-100px] bottom-[-100px] h-[320px] w-[320px] rounded-full bg-[#89f5e7]/20 blur-3xl" />
+        <div className="absolute -right-25 -bottom-25 h-80 w-80 rounded-full bg-[#89f5e7]/20 blur-3xl" />
 
-        <div className="relative mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
           {/* BREADCRUMB */}
           <div className="mb-10 flex flex-wrap items-center gap-2 text-sm text-white/70">
             <Link href="/" className="transition hover:text-white">
@@ -75,7 +75,7 @@ export default function DoctorDetailsClient({ doctor }) {
             <span className="font-semibold text-white">{doctor.name}</span>
           </div>
 
-          <div className="grid items-center gap-14 lg:grid-cols-[400px_minmax(0,1fr)]">
+          <div className="grid items-center gap-10 lg:grid-cols-[400px_minmax(0,1fr)] lg:gap-14">
             {/* IMAGE */}
             <div className="relative">
               <div className="absolute inset-0 rounded-[40px] bg-white/10 blur-2xl" />
@@ -86,7 +86,7 @@ export default function DoctorDetailsClient({ doctor }) {
                   alt={doctor.name}
                   width={500}
                   height={500}
-                  className="h-[460px] w-full rounded-[30px] object-cover"
+                  className="h-80 w-full rounded-[30px] object-cover sm:h-95 lg:h-115"
                   priority
                 />
 
@@ -105,18 +105,20 @@ export default function DoctorDetailsClient({ doctor }) {
                 Healthcare Specialist
               </div>
 
-              <h1 className="mt-6 text-5xl font-black leading-tight lg:text-6xl">
+              <h1 className="mt-6 text-3xl font-black leading-tight sm:text-4xl lg:text-6xl">
                 {doctor.name}
               </h1>
 
-              <p className="mt-4 text-2xl text-[#dce9ff]">{doctor.specialty}</p>
+              <p className="mt-4 text-lg text-[#dce9ff] sm:text-xl lg:text-2xl">
+                {doctor.specialty}
+              </p>
 
-              <p className="mt-8 max-w-3xl text-lg leading-9 text-[#dce9ff]/80">
+              <p className="mt-8 max-w-3xl text-base leading-8 text-[#dce9ff]/80 sm:text-lg sm:leading-9">
                 {doctor.description}
               </p>
 
               {/* STATS */}
-              <div className="mt-10 grid gap-5 sm:grid-cols-3">
+              <div className="mt-10 grid gap-4 sm:grid-cols-3 sm:gap-5">
                 <div className="rounded-[28px] border border-white/10 bg-white/10 p-6 backdrop-blur-xl">
                   <p className="text-sm text-[#dce9ff]/70">Experience</p>
 
@@ -142,10 +144,10 @@ export default function DoctorDetailsClient({ doctor }) {
               </div>
 
               {/* BUTTONS */}
-              <div className="mt-10 flex flex-wrap gap-4">
+              <div className="mt-10 flex flex-col gap-4 sm:flex-row sm:flex-wrap">
                 <Link
                   href={`/book/${doctor.id}`}
-                  className="group inline-flex items-center gap-3 rounded-2xl bg-[#6bd8cb] px-7 py-4 text-sm font-bold text-[#08131f] transition-all duration-300 hover:-translate-y-1 hover:bg-[#89f5e7]"
+                  className="group inline-flex w-full items-center justify-center gap-3 rounded-2xl bg-[#6bd8cb] px-7 py-4 text-sm font-bold text-[#08131f] transition-all duration-300 hover:-translate-y-1 hover:bg-[#89f5e7] sm:w-auto"
                 >
                   <FontAwesomeIcon icon={faCalendarCheck} />
                   Book Appointment
@@ -155,7 +157,7 @@ export default function DoctorDetailsClient({ doctor }) {
                   />
                 </Link>
 
-                <button className="rounded-2xl border border-white/10 bg-white/10 px-7 py-4 text-sm font-semibold text-white backdrop-blur-xl transition hover:bg-white/20">
+                <button className="w-full rounded-2xl border border-white/10 bg-white/10 px-7 py-4 text-sm font-semibold text-white backdrop-blur-xl transition hover:bg-white/20 sm:w-auto">
                   Contact Clinic
                 </button>
               </div>
@@ -170,8 +172,8 @@ export default function DoctorDetailsClient({ doctor }) {
           {/* LEFT */}
           <div className="space-y-8">
             {/* ABOUT */}
-            <div className="rounded-[36px] border border-[#bcc9c6]/40 bg-white p-8 shadow-[0_20px_60px_rgba(15,23,42,0.05)]">
-              <div className="flex items-center gap-4">
+            <div className="rounded-[36px] border border-[#bcc9c6]/40 bg-white p-5 shadow-[0_20px_60px_rgba(15,23,42,0.05)] sm:p-8">
+              <div className="flex items-start gap-4 sm:items-center">
                 <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-[#dff7f4] text-[#00685f]">
                   <FontAwesomeIcon icon={faHeartPulse} size="lg" />
                 </div>
@@ -181,18 +183,18 @@ export default function DoctorDetailsClient({ doctor }) {
                     About Doctor
                   </p>
 
-                  <h2 className="mt-1 text-3xl font-black text-[#0b1c30]">
+                  <h2 className="mt-1 text-2xl font-black text-[#0b1c30] sm:text-3xl">
                     Professional Overview
                   </h2>
                 </div>
               </div>
 
-              <p className="mt-8 text-lg leading-9 text-[#5c6b7a]">
+              <p className="mt-8 text-base leading-8 text-[#5c6b7a] sm:text-lg sm:leading-9">
                 {doctor.description}
               </p>
 
               {/* INFO */}
-              <div className="mt-10 grid gap-5 md:grid-cols-2">
+              <div className="mt-10 grid gap-4 md:grid-cols-2 sm:gap-5">
                 <div className="rounded-[30px] border border-[#dce9ff] bg-[#f8f9ff] p-6">
                   <div className="flex items-center gap-4">
                     <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white text-[#00685f] shadow-sm">
@@ -229,7 +231,7 @@ export default function DoctorDetailsClient({ doctor }) {
 
             {/* REVIEWS */}
             <div className="rounded-[36px] border border-[#bcc9c6]/40 bg-white p-8 shadow-[0_20px_60px_rgba(15,23,42,0.05)]">
-              <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-sm font-semibold text-[#00685f]">
                     Testimonials
@@ -250,9 +252,9 @@ export default function DoctorDetailsClient({ doctor }) {
                 {reviews.map((review) => (
                   <div
                     key={review.name}
-                    className="rounded-[28px] border border-[#e0e3e5] bg-[#fcfdff] p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                    className="rounded-[28px] border border-[#e0e3e5] bg-[#fcfdff] p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:p-6"
                   >
-                    <div className="flex gap-4">
+                    <div className="flex flex-col gap-4 sm:flex-row">
                       <Image
                         src={review.avatar}
                         alt={review.name}
@@ -262,7 +264,7 @@ export default function DoctorDetailsClient({ doctor }) {
                       />
 
                       <div className="flex-1">
-                        <div className="flex flex-wrap items-start justify-between gap-3">
+                        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
                           <div>
                             <h3 className="text-lg font-bold text-[#0b1c30]">
                               {review.name}
@@ -282,7 +284,7 @@ export default function DoctorDetailsClient({ doctor }) {
                           </div>
                         </div>
 
-                        <p className="mt-5 leading-8 text-[#5c6b7a]">
+                        <p className="mt-5 text-sm leading-7 text-[#5c6b7a] sm:text-base sm:leading-8">
                           {review.text}
                         </p>
                       </div>
@@ -295,8 +297,8 @@ export default function DoctorDetailsClient({ doctor }) {
 
           {/* RIGHT */}
           <aside className="space-y-8">
-            <div className="sticky top-24 overflow-hidden rounded-[36px] bg-[#08131f] p-7 text-white shadow-[0_20px_60px_rgba(15,23,42,0.15)]">
-              <div className="absolute right-[-60px] top-[-60px] h-[180px] w-[180px] rounded-full bg-[#6bd8cb]/10 blur-3xl" />
+            <div className="sticky top-24 overflow-hidden rounded-[36px] bg-[#08131f] p-5 text-white shadow-[0_20px_60px_rgba(15,23,42,0.15)] sm:p-7">
+              <div className="absolute -right-15 -top-15 h-45 w-45 rounded-full bg-[#6bd8cb]/10 blur-3xl" />
 
               <div className="relative">
                 <div className="flex items-center gap-3">
@@ -327,13 +329,15 @@ export default function DoctorDetailsClient({ doctor }) {
                           : "border-white/10 bg-white/5 hover:bg-white/10"
                       }`}
                     >
-                      <div className="flex items-center justify-between">
+                        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <div>
                           <p className="text-xs uppercase tracking-[0.18em] text-white/40">
                             Time
                           </p>
 
-                          <h3 className="mt-2 text-xl font-bold">{slot}</h3>
+                          <h3 className="mt-2 text-lg font-bold sm:text-xl">
+                            {slot}
+                          </h3>
                         </div>
 
                         <div className="rounded-full bg-[#22c55e]/20 px-3 py-1 text-xs font-bold uppercase tracking-wide text-[#4ade80]">
